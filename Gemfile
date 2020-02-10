@@ -76,4 +76,4 @@ gem "refile-mini_magick"
 gem "jquery-rails"
 
 # Adds: bootstrap
-gem "bootstrap-sass", "~> 3.3.6"
+gem "bootstrap-sass", "~> 3.4.1"
