@@ -10,6 +10,6 @@ class User < ApplicationRecord
   attachment :profile_image, destroy: false
 
   #バリデーションは該当するモデルに設定する。エラーにする条件を設定できる。
-  validates :name, presence: true, length: {maximum: 20, minimum: 2}
-  validates :introduction, length: {maximum: 50, minimum: 0}
+  validates :name, length: { in: 2..20 }
+  validates :introduction, length: { maximum: 50 }
 end
