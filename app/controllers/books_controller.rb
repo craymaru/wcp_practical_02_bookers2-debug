@@ -1,4 +1,10 @@
 class BooksController < ApplicationController
+  # Adds: reject not-signin users
+  before_action :authenticate_user!
+
+  # Adds: reject not-edit another user prifiles
+  before_action :correct_user, only: [:edit, :update]
+
   def show
     @book = Book.find(params[:id])
     @new_book = Book.new
@@ -40,7 +46,15 @@ class BooksController < ApplicationController
 
   private
 
+  def correct_user
+    book = Book.find(params[:id])
+    # refactering because book model has belong_to
+    if current_user.id != book.user.id
+      redirect_to books_path
+    end
+  end
+
   def book_params
-    params.require(:book).permit(:body, :title)
+    params.require(:book).permit(:body, :title, :user_id)
   end
 end

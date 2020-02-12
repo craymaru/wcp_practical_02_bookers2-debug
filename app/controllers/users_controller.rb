@@ -1,5 +1,10 @@
 class UsersController < ApplicationController
-  before_action :baria_user, only: [:update]
+  # Adds: reject not-signin users
+  before_action :authenticate_user!
+
+  # Adds: reject not-edit another user prifiles
+  before_action :correct_user, only: [:edit, :update]
+  # before_action :baria_user, only: [:update]
 
   def show
     @user = User.find(params[:id])
@@ -33,9 +38,16 @@ class UsersController < ApplicationController
     params.require(:user).permit(:name, :introduction, :profile_image)
   end
 
-  #url直接防止　メソッドを自己定義してbefore_actionで発動。
-  def baria_user
-    unless params[:id].to_i == current_user.id
+  # #url直接防止　メソッドを自己定義してbefore_actionで発動。
+  # def baria_user
+  #   unless params[:id].to_i == current_user.id
+  #     redirect_to user_path(current_user)
+  #   end
+  # end
+
+  def correct_user
+    user = User.find(params[:id])
+    if current_user != user
       redirect_to user_path(current_user)
     end
   end
